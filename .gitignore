@@ -1,0 +1,27 @@
+# Archivo .gitignore para el proyecto de la Clase 03
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos temporales del editor
+*.tmp
+*.temp
+*~
+
+# Logs
+*.log
+
+# Archivos de configuración del IDE
+.vscode/
+.idea/
+
+# Dependencias (si usáramos Node.js en el futuro)
+node_modules/
+
+# Archivos de build (si usáramos herramientas de build)
+dist/
+build/
+
+# Archivos de backup
+*.bak
