@@ -1,5 +1,7 @@
 # Actividad Clase 03 - API y Git
 
+**Proyecto completado - Versión simplificada**
+
 ## Descripción
 Este proyecto es parte de la actividad práctica de la Clase 03, donde implementamos:
 
