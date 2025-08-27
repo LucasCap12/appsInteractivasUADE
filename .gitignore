@@ -25,3 +25,17 @@ build/
 
 # Archivos de backup
 *.bak
+
+# Repositorios embebidos para evitar conflictos
+Clase03/ActividadClase/
+
+# Archivos específicos de React/Vite
+**/package-lock.json
+**/.vite/
+
+# Variables de entorno
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
