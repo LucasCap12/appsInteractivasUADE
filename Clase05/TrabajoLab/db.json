@@ -1,0 +1,76 @@
+{
+  "productos": [
+    {
+      "id": 1,
+      "nombre": "Ray-Ban Aviator Classic",
+      "precio": 189.99,
+      "imagen": "https://picsum.photos/id/1059/300/200",
+      "categoria": "Anteojos",
+      "descripcion": "Lentes de sol clásicos con montura dorada y lentes polarizados",
+      "stock": 15
+    },
+    {
+      "id": 2,
+      "nombre": "Cámara Canon EOS R5",
+      "precio": 3899.99,
+      "imagen": "https://picsum.photos/id/250/300/200",
+      "categoria": "Fotografía",
+      "descripcion": "Cámara mirrorless profesional con sensor full-frame de 45MP",
+      "stock": 8
+    },
+    {
+      "id": 3,
+      "nombre": "Guantes de Boxeo Pro",
+      "precio": 89.99,
+      "imagen": "https://picsum.photos/id/345/300/200",
+      "categoria": "Deportes",
+      "descripcion": "Guantes profesionales de boxeo con protección extra",
+      "stock": 20
+    },
+    {
+      "id": 4,
+      "nombre": "Smartwatch Galaxy Watch 5",
+      "precio": 299.99,
+      "imagen": "https://picsum.photos/id/160/300/200",
+      "categoria": "Tecnología",
+      "descripcion": "Reloj inteligente con monitoreo avanzado de salud",
+      "stock": 25
+    },
+    {
+      "id": 5,
+      "nombre": "Zapatillas Running Pro",
+      "precio": 129.99,
+      "imagen": "https://picsum.photos/id/400/300/200",
+      "categoria": "Deportes",
+      "descripcion": "Zapatillas profesionales para running con máxima amortiguación",
+      "stock": 30
+    },
+    {
+      "id": 6,
+      "nombre": "Laptop Gaming ROG",
+      "precio": 1999.99,
+      "imagen": "https://picsum.photos/id/201/300/200",
+      "categoria": "Tecnología",
+      "descripcion": "Laptop gaming con RTX 4060 y procesador Intel i9",
+      "stock": 12
+    },
+    {
+      "id": 7,
+      "nombre": "Auriculares Sony WH-1000XM5",
+      "precio": 399.99,
+      "imagen": "https://picsum.photos/id/325/300/200",
+      "categoria": "Tecnología",
+      "descripcion": "Auriculares premium con cancelación de ruido",
+      "stock": 22
+    },
+    {
+      "id": 8,
+      "nombre": "Pelota de Fútbol Profesional",
+      "precio": 49.99,
+      "imagen": "https://picsum.photos/id/358/300/200",
+      "categoria": "Deportes",
+      "descripcion": "Pelota de fútbol oficial con tecnología aerodinámica",
+      "stock": 40
+    }
+  ]
+}
