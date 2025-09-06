@@ -1,0 +1,11 @@
+cd TrabajoLab
+
+npm install
+
+npm run server
+
+npm run dev
+
+Aplicación React: http://localhost:5173
+API de productos: http://localhost:3001/products
+
