@@ -1,0 +1,16 @@
+ecommerce/
+├── backend/               # Proyecto Spring Boot (API)
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/api/ecommerce
+│   │   │   │       ├── controller/  # (@RestController)
+│   │   │   │       ├── model/       # Entidades
+│   │   │   │       ├── repository/  # (JpaRepository)
+│   │   │   │       ├── service/     # Lógica de negocio
+│   │   │   │       └── MiAppApplication.java
+│   │   │   └── resources/
+│   │   │       └── application.properties
+│   ├── target/
+│   └── pom.xml
+└── frontend/              # Proyecto React (View)

@@ -1,0 +1,74 @@
+Lineamientos sobre la 1ª Entrega del TPO y grabación del video
+Estimados alumnos.
+Les escribo para detallarles del video del TPO y los puntos clave para la evaluación de la 1ª Entrega.
+ 
+1- Grabación del video:
+Deben capturar un video demostrando el funcionamiento actual de su aplicación.
+ 
+Debajo los detalles:
+- el video no debe superar los 5 minutos
+- deben mostrar las pantallas y sus funcionalidades, descritas en el archivo TPO_AI_2C2025.pdf
+- asegúrense de demostrar todas las funcionalidades disponibles en cada pantalla (ej: en Catálogo de Productos, mostrar buscar productos, filtrar por categorías, agregar ítem a carrito, etc.).
+- No es necesario que hablen todos los integrantes
+- No es necesario mostrar el código fuente
+- Por favor subir el video en el canal de su grupo.
+ 
+2- 1era Entrega del TPO (Frontend React):
+Esta evaluación se realizará durante el horario de clases del día 17/09, entre las 13:30 y 17:30 horas.
+ 
+La evaluación incluirá los siguientes aspectos:
+a) Demostración y Preguntas sobre el Código Implementado:
+Todos los integrantes del equipo deben estar preparados para explicar el código de cualquier parte del proyecto.
+Les haremos preguntas sobre cómo se desarrollaron las pantallas, las decisiones técnicas tomadas (ej: ¿cómo implementaron el carrito, usaron algún Context?), y conceptos específicos aplicados en su código.
+ 
+b) Repositorio en GitHub:
+El código fuente completo del proyecto debe estar subido a su repositorio de GitHub y accesible para nosotros.
+Revisaremos el historial de commits y las contribuciones de cada integrante del equipo. Asegúrense de que todos hayan contribuido activamente.
+ 
+c) Preguntas Teóricas sobre Conceptos Vistos en Clase:
+Se realizarán preguntas sobre los fundamentos y temas vistos en clases.
+Ejemplos: ventajas de props.children, necesidad de rutas protegidas, etc.
+Recuerden que todo el material teórico se encuentra disponible en la solapa Archivos de cada clase.
+ 
+ 
+Criterios de Evaluación para la 1ª Entrega del TPO:
+Evaluaremos su proyecto de Frontend React basándonos en la implementación de los siguientes puntos, no es obligatorio que están implementadas todas.
+ 
+Conceptos Clave de Javascript, React:
+Llamadas asincrónicas, promesas.
+Uso adecuado de Componentes (reutilización, responsabilidad única).
+Manejo de Estado (useState).
+Uso correcto de Propiedades (props), children.
+Manejo de Efectos (useEffect), especialmente para interacción con APIs.
+Manejo de Contexto (useContext), especialmente para interacción con APIs.
+Implementación de Renderizado Condicional.
+    
+Integración con API REST:
+Uso de fetch para interactuar con una API con json-server 
+ 
+Manejo de Datos Críticos:
+Implementación del Carrito y/o Autenticación utilizando React Context API o localStorage.
+                
+Enrutamiento:
+Uso de React Router: useParams, useNavigate, rutas protegidas.
+                
+Estructura del Código y Buenas Prácticas:
+Organización lógica de archivos y carpetas.
+Legibilidad del código (indentación, nombres descriptivos, comentarios cuando son necesarios).
+Uso de componentes reutilizables.
+               
+Interfaz de Usuario (UI) y Experiencia de Usuario (UX):
+La UI/UX debe ser funcional y aceptable, aunque el foco principal de la evaluación no sea el diseño visual.
+               
+Se valorará positivamente la implementación de:
+Uso bien aplicado de React Context API
+Estructura de proyecto organizada y escalable (pueden referenciar EstructuraDeCarpetas.txt como ejemplo de organización lógica).
+Cualquier funcionalidad extra o mejora significativa que hayan implementado.
+ 
+ 
+Cualquier consulta no duden en escribirnos por este medio.
+Les deseo muchos éxitos.
+Saludos cordiales.
+TPO_AI_2C2025.pdf
+EstructuraDeCarpetas.txt
+ 

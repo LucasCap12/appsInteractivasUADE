@@ -1,0 +1,31 @@
+¿Por qué separar la lógica de negocio en un Servicio y no en un Controller?
+Controller: Su rol es manejar peticiones HTTP, validar datos de entrada y devolver respuestas.
+Service: Es la capa donde reside la lógica de negocio y donde las transacciones son necesarias para garantizar consistencia en la base de datos.
+
+Separación de responsabilidades 
+	Controller: Maneja peticiones HTTP, validación básica y formato de respuestas.
+	Service: Contiene la lógica de negocio (reglas, cálculos, transacciones).
+
+Reusabilidad:
+	Un servicio puede ser usado por múltiples controllers (ej: API REST y Web MVC).
+
+Testabilidad:
+	Es más fácil probar la lógica de negocio en aislamiento (sin necesidad de mockear HTTP).
+
+Mantenibilidad:
+	Cambios en reglas de negocio no afectan la capa web.
+
+Transacciones:
+	Los servicios gestionan transacciones de BD (@Transactional), los controllers no deben hacerlo
+	
+	
+Beneficios Clave
+Controller:
+	Limpio y enfocado en HTTP.
+	Maneja excepciones y formatos de respuesta.
+
+Service:
+	Contiene reglas de negocio (validaciones, cálculos).
+	Gestiona transacciones (@Transactional).
+	Puede ser reutilizado por otros controllers o incluso por jobs batch.
+

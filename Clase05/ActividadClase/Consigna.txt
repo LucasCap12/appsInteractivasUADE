@@ -1,0 +1,6 @@
+Instalar json-server: (Sugerido)
+entrar el directorio del proyecto cd hola-react
+npm install json-server
+crear un dir json-server, dentro un archivo db.json
+levantarlo  
+npx json-server db.json

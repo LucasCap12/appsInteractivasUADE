@@ -1,0 +1,173 @@
+Clase 09: Introducción al Back-End con Spring Boot  
+Duración: 4 horas  
+
+---
+
+1. Arquitectura en Capas  
+Tiempo estimado: 30 minutos  
+
+Subtemas:  
+- ¿Qué es? Organización del código en capas independientes con responsabilidades claras.  
+- Capas principales:  
+  - Capa de Presentación (Controller): Maneja solicitudes HTTP y respuestas (interactúa con el front-end).  
+  - Capa de Negocio (Service): Contiene la lógica de negocio (ej: validaciones, cálculos).  
+  - Capa de Acceso a Datos (Repository): Interactúa con bases de datos.  
+  - Capa de Dominio (Model): Define entidades (ej: clases como Producto, Usuario).  
+
+Ejemplo:  
+En su e-commerce de React, el front-end (presentación) se comunica con el back-end (Spring Boot), que a su vez accede a una base de datos.  
+
+Implementación en Spring Boot:  
+- Paquetes típicos: controller, service, repository, model.  
+- Anotaciones clave: @RestController, @Service, @Repository.  
+
+Práctica sugerida:  
+- Crear un proyecto Spring Boot y definir paquetes para cada capa.  
+
+---
+
+2. Package Manager (Maven)  
+Tiempo estimado: 30 minutos  
+
+Subtemas:  
+- ¿Qué es Maven? Herramienta para gestionar dependencias, compilar y empaquetar proyectos.  
+- Comparación con npm: Similar a package.json, pero en Java.  
+- Archivo pom.xml: Define dependencias (ej: Spring Boot, MySQL), plugins y configuraciones.  
+
+Instalación:  
+- Descargar Maven desde [maven.apache.org](https://maven.apache.org/download.cgi).  
+- Configurar variables de entorno.  
+
+Ejemplo de pom.xml:  
+xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+
+
+Práctica sugerida:  
+- Crear un proyecto usando [Spring Initializr](https://start.spring.io/) y agregar una dependencia (ej: Spring Data JPA).  
+
+---
+
+3. Spring Boot  
+Tiempo estimado: 45 minutos  
+
+Subtemas:  
+- ¿Qué es? Framework para crear aplicaciones Java empresariales con configuración simplificada.  
+- Características clave:  
+  - Auto-configuración: Detecta dependencias y configura automáticamente (ej: base de datos).  
+  - Embedded Tomcat: Servidor integrado para ejecutar la app sin despliegue externo.  
+  - Spring Initializr: Genera proyectos base con dependencias preconfiguradas.  
+
+Instalación:  
+- JDK 17 (descargar de [Oracle](https://www.oracle.com/java/technologies/downloads/)).  
+- IDE: IntelliJ IDEA o VS Code con extensión Spring Boot.  
+
+Ejemplo:  
+Crear una clase principal con @SpringBootApplication y un endpoint simple:  
+java
+@SpringBootApplication
+public class EcommerceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(EcommerceApplication.class, args);
+    }
+}
+
+
+Práctica sugerida:  
+- Ejecutar la aplicación y verificar que el servidor se inicia en http://localhost:8080.  
+
+---
+
+4. Model-View-Controller (MVC)  
+Tiempo estimado: 40 minutos  
+
+Subtemas:  
+- Modelo: Representa los datos (entidades como Producto).  
+- Vista: En React, ya la tienen cubierta. En Spring Boot, se usan controllers para enviar datos.  
+- Controller: Maneja las solicitudes HTTP y devuelve respuestas (JSON).  
+
+Ejemplo en Spring Boot:  
+java
+@RestController
+public class ProductoController {
+    @GetMapping("/productos")
+    public List<Producto> listarProductos() {
+        // Lógica para devolver productos
+    }
+}
+
+
+Práctica sugerida:  
+- Crear un controlador que retorne un mensaje "Hola Mundo" en formato JSON.  
+
+---
+
+5. Inversión de Control (IoC) e Inyección de Dependencias  
+Tiempo estimado: 45 minutos  
+
+Subtemas:  
+- IoC: Spring gestiona el ciclo de vida de los objetos (beans) en lugar del desarrollador.  
+- Inyección de Dependencias: Spring provee las dependencias automáticamente (ej: servicios en controladores).  
+
+Ejemplo:  
+java
+@Service
+public class ProductoService {
+    // Lógica de negocio
+}
+
+@RestController
+public class ProductoController {
+    @Autowired
+    private ProductoService productoService; // Inyección automática
+}
+
+
+Práctica sugerida:  
+- Crear un servicio UsuarioService y usarlo en un controlador mediante @Autowired.  
+
+---
+
+6. APIs RESTful  
+Tiempo estimado: 50 minutos  
+
+Subtemas:  
+- Principios REST:  
+  - Recursos identificados por URLs (ej: /productos).  
+  - Métodos HTTP: GET (obtener), POST (crear), PUT (actualizar), DELETE (eliminar).  
+- Anotaciones clave:  
+  - @PostMapping, @RequestBody, @PathVariable.  
+
+Ejemplo de CRUD:  
+java
+@PostMapping("/productos")
+public ResponseEntity<Producto> crearProducto(@RequestBody Producto producto) {
+    // Guardar producto en base de datos
+    return new ResponseEntity<>(producto, HttpStatus.CREATED);
+}
+
+
+Práctica sugerida:  
+- Implementar un API REST para gestionar productos (GET, POST).  
+
+---
+
+Instalaciones Requeridas  
+1. JDK 17: [Descargar aquí](https://www.oracle.com/java/technologies/downloads/).  
+2. Spring Tools Suite (STS) o IntelliJ IDEA: [STS](https://spring.io/tools).  
+3. Postman: Para probar APIs [postman.com](https://www.postman.com/).  
+
+---
+
+Práctica Integradora Final (30 minutos)  
+Objetivo: Crear un backend para su e-commerce de React:  
+1. Definir entidad Producto (id, nombre, precio).  
+2. Crear ProductoController con endpoints GET y POST.  
+3. Usar ProductoService para simular almacenamiento en memoria (List).  
+4. Probar con Postman y conectar luego con React (opcional fuera de clase).  
+
+---
+

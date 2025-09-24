@@ -1,0 +1,14 @@
+ecommerce/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/api/ecommerce
+│   │   │       ├── controller/
+│   │   │       ├── model/
+│   │   │       ├── repository/
+│   │   │       ├── service/
+│   │   │       └── MiAppApplication.java
+│   │   └── resources/
+│   │       └── application.properties
+├── target/
+└── pom.xml

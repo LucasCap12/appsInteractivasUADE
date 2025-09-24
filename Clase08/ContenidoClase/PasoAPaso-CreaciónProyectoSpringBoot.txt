@@ -1,0 +1,243 @@
+------------------------------------------------------------------------------------------
+Instalar JDK:
+-------------
+
+Spring Boot 3.x (3.0.0 y superiores): Requiere Java 17 o superior.
+
+JDK 17 por que y no 21?
+Mayor Adopción y Madurez: más recursos, tutoriales, ejemplos y soluciones a problemas específicos en línea para Java 17 en comparación con Java 21.
+posible que algunas dependencias más antiguas o menos mantenidas aún no estén completamente optimizadas o probadas con la última versión 21. 
+Estabilidad Comprobada
+
+JDK: java development kit
+paquete esencial que necesitas para desarrollar aplicaciones en el lenguaje de programación Java
+javac (Java Compiler)
+JVM (Java Virtual Machine)
+javadoc (Java Documentation Tool)
+Librerías de Clases Java (Java Class Library): clases preescritas que proporcionan funcionalidades para diversas tareas, como entrada/salida, redes, utilidades de colecciones, seguridad, gráficos
+
+
+jdk 17
+https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
+
+windows installer
+https://download.oracle.com/java/17/archive/jdk-17.0.12_windows-x64_bin.exe
+
+Configurar Variables de Entorno: 
+Panel de Control -> variables de entorno 
+
+Windows:
+Agregar la ruta del JDK (ej: C:\Program Files\Java\jdk-17.0.2\bin) a PATH.
+Crear variable JAVA_HOME apuntando a la carpeta del JDK C:\Program Files\Java\jdk-17\
+
+
+verificar si java ok 
+java --version
+
+
+------------------------------------------------------------------------------------------
+Crear Proyecto SpringBoot con Spring initializer
+-----------------------------------------------
+https://start.spring.io/
+
+Configura los siguientes campos:
+Project: Maven
+Language: Java.
+Spring Boot: 3.4.6 estable
+Packaging: Jar 
+Java: 17 
+Group: nombre empresa
+Artifact: nombre proyecto 
+Name: nombre proyecto descriptivo
+
+Agrega las dependencias:
+Spring Web (spring-boot-starter-web): Para crear APIs REST 
+herramientas fundamentales para la creación de APIs REST (Representational State Transfer). 
+Servidor Web Embebido: generalmente Tomcat
+Soporte para el Patrón MVC (Model-View-Controller)
+Manejo de Peticiones HTTP
+Enrutamiento de Peticiones (@RequestMapping, @GetMapping, @PostMapping, etc.)
+
+Spring Data JPA (spring-boot-starter-data-jpa): Para base de datos.
+simplifica la interacción con bases de datos relacionales utilizando el Java Persistence API (JPA) define un estándar para el mapeo objeto-relacional (ORM),
+Repositorios JPA: definir interfaces que extienden JpaRepository y Spring Data JPA generará automáticamente la implementación de métodos comunes de acceso a datos (ABM o CRUD: Create, Read, Update, Delete) 
+
+Lombok (lombok): Para evitar código repetitivo boilerplate
+POO tener getters, setters, constructores 
+objetivo reducir la cantidad de código boilerplate que necesitas escribir en tus clases Java, especialmente código relacionado con getters, setters, constructores, 
+Lo hace a través de anotaciones que se procesan durante la compilación, generando automáticamente este código por ti.
+@Getter y @Setter: Generan automáticamente los métodos getter y setter para los campos de tu clase.
+@NoArgsConstructor, @AllArgsConstructor: Generan diferentes tipos de constructores
+
+H2 Database 
+base en memoria, los datos que almacena se pierden cuando la aplicación se detiene o se reinicia.
+Durante el desarrollo y la ejecución de pruebas, H2 ofrece una forma rápida y sencilla de tener una base de datos funcional sin la sobrecarga de configurar un servidor MySQL completo. 
+
+MySQL Driver (mysql-connector-java)
+parra la implementación real del e-commerce, necesitarás una base de datos persistente y robusta como MySQL para manejar el volumen de datos y las demandas de un entorno de producción.
+
+Generar, descargar, descomprimir y abrir con VSC
+
+
+--------------------------------------------------------------------------------
+Maven - Gestión de Dependencias:
+Problema que resuelve: 
+En un proyecto de software necesitas utilizar bibliotecas externas (como Spring Boot, Lombok, drivers de bases de datos, etc.). Gestionar estas dependencias manualmente (descargarlas, agregarlas al proyecto, actualizarlas) puede ser tedioso y propenso a errores.
+
+Cómo lo resuelve Maven: 
+Maven utiliza un archivo central llamado pom.xml (Project Object Model) donde declaras las dependencias que tu proyecto necesita. 
+Descargar las bibliotecas necesarias desde repositorios remotos (como Maven Central).
+Gestionar las versiones de las dependencias.
+Si una de tus dependencias depende de otras bibliotecas, Maven también las descarga automáticamente.
+Asegurar la compatibilidad entre las diferentes dependencias 
+
+-----------------------------------------------------------------------------
+MVC Model View Controller
+patrón de diseño de software que busca organizar tu código de manera lógica y separada para que sea más fácil de entender, mantener, probar y modificar. 
+
+Modelo:
+donde guardas la información importante del e-commerce (los productos, los usuarios, los pedidos, el carrito de compras, etc.)
+Producto.java (POO) -> tabla productos (BD relacional) 
+Usuario.java -> tablar usuarios 
+Mapeo ORM
+
+View:
+es lo que el usuario ve e interactúa, frontend React 
+
+Controller:
+Recibe las acciones del usuario desde la Vista, le dice al Modelo qué hacer(por ejemplo, "agregar este producto al carrito", "buscar productos por nombre"), y luego decide qué Vista mostrar al usuario en respuesta (por ejemplo, "mostrar el carrito actualizado", "mostrar los resultados de la búsqueda").
+
+-----------------------------------------------------------------------------
+
+
+Instalar Extensiones VSC:
+Spring Boot Extension Pack:
+agrupa varias extensiones útiles para el desarrollo de aplicaciones Spring Boot
+
+Extension Pack for Java: facilitar desarrollo en Java en VS Code, 
+
+Postman: Probar los endpoints
+
+
+-----------------------------------------------------------------------------
+Recorrido por carpetas y archivos de configuración:
+
+
+
+-----------------------------------------------------------------------------
+Configurar BD dev H2 
+
+Agregar estas líneas al archivo application.properties
+# H2 Database (se reinicia al parar la app)
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+
+----------------
+Después vamos a configurar mysql:
+
+o mysql-connector-java
+<!-- Para MySQL -->
+<dependency>
+    <groupId>com.mysql</groupId>
+    <artifactId>mysql-connector-j</artifactId>
+</dependency>
+
+# MySQL
+spring.datasource.url=jdbc:mysql://localhost:3306/mi_basedatos
+spring.datasource.username=root
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=update
+
+
+----------------------------------------------------------------
+Levantar proyecto 
+pom.xml abrir spring dashboard play
+
+Ingresar a consoloa H2
+Abre http://localhost:8080/h2-console
+JDBC URL: jdbc:h2:mem:testdb
+User: sa
+Password: (vacío)
+
+
+
+-----------------------------------------------------------------------------
+Crear endpoints para productos:
+-----------------------------
+Objetivo dejar de usar json-server y llamar endpoints de nuestro backend
+https://localhost:3000/productos  -> https://localhost:8080/api/productos 
+
+
+Crear estructura de carpetas backend:
+------------------------------------
+ecommerce/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/api/ecommerce
+│   │   │       ├── controller/ -> mvc controlla la comunicación vista -> backend
+│   │   │       ├── model/ -> representa las tablas de la DB
+│   │   │       ├── repository/ -> métodos para persisitir en DB
+│   │   │       ├── service/ -> lógica negocio ej: transferencia -> verificar si tengo fondos
+│   │   │       └── EcommerceApplication.java
+│   │   └── resources/
+│   │       └── application.properties
+├── target/
+└── pom.xml
+
+
+
+Crea una Entidad: representación de una tabla en la db
+------------------
+src/main/java/com/api/ecommerce/model/Producto.java:
+
+
+
+Crea un repositorio:
+--------------------
+es un administrador para tu tabla (o Entidad) en la base de datos. 
+En lugar de escribir directamente código SQL o interactuar con la complejidad de la gestión de la conexión y las transacciones de la base de datos, utilizas los métodos proporcionados por el Repositorio.
+ 
+src/main/java/com/api/ecommerce/repository/ProductoRepository.java:
+
+
+
+Crear un Controlador REST:
+---------------------------
+clase Java responsable de manejar las solicitudes HTTP entrantes para una API REST y devolver las respuestas a los clientes en un formato específico (comúnmente JSO).
+
+Controlador hace todo (recibir peticiones, aplicar reglas de negocio y acceder a la base de datos), 
+ Difícil de mantener: Si cambia la lógica, hay que modificar el controlador.
+ Poco reutilizable: Si otro controlador necesita la misma lógica, hay que copiar y pegar código.
+	-> Se sugiere utilizar un Service que tenga el negocio 
+
+
+src/main/java/com/api/ecommerce/controller/ProductoController.java
+api rest 
+listar productos
+buscar prod x id
+del prod x id 
+add prod 
+
+
+
+
+
+------------------------------------------------------------------------
+Prueba la API con Postman:
+
+GET http://localhost:8080/api/productos (lista productos).
+
+POST http://localhost:8080/api/productos (crea un producto):
+json
+{
+    "nombre": "Laptop",
+    "precio": 999.99
+}
+
+

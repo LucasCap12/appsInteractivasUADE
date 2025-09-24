@@ -1,0 +1,171 @@
+Clase 06: 
+=========
+
+Pre-Entrega TPO:
+================
+presentación 10 min x grupo => total 80min
+
+
+React Router:
+=============
+1. React Router
+a. ¿Por qué usamos React Router?
+Definir las rutas principales de la aplicación.
+Links de una página a otra.
+
+b. ¿Por que utilizar react router y no un link directo <a>?
+1. Comportamiento de Single Page Application (SPA)
+Problema con <a> tradicional:
+Cuando usas un enlace directo (<a href="/product/1">), el navegador recarga toda la página, lo que:
+  Reinicia el estado de la app (ej: el carrito de compras se vacía).
+  Descarga nuevamente todos los assets (CSS, JS, imágenes), aunque ya estén en caché.
+  Rompe la experiencia de una SPA, haciendo que la app se sienta lenta.
+
+Solución con React Router:
+Los componentes <Link> de React Router actualizan solo la parte del DOM que cambia, manteniendo:
+  El estado global (ej: items en el carrito).
+  Las conexiones activas 
+    Casos de Uso Comunes
+      Chats en Tiempo Real: ws web 
+      Los mensajes se entregan instantáneamente sin necesidad de recargar la página.
+
+
+// MAL: Recarga toda la página
+<a href="/product/1">Ver producto</a>
+
+//  BIEN: Navegación sin recarga (SPA)
+import { Link } from 'react-router-dom';
+<Link to="/product/1">Ver producto</Link>
+
+2. Manejo del Historial del Navegador
+Problema con <a> tradicional:
+El botón "Atrás" del navegador recarga la página anterior, no mantiene el estado previo.
+
+Solución con React Router:
+  Historial en memoria: Permite navegar entre rutas sin perder el estado 
+  ej: busqueda ml 
+
+3. Rutas Dinámicas y Parámetros
+Ventaja de React Router:
+  URLs limpias y semánticas como /product/1, /checkout, /user/profile.
+
+ej: link antiguo
+<a class="gb_X" aria-label="Busca Imágenes " data-pid="2" href="
+https://www.google.com/imghp?hl=es-419&amp;authuser=0&amp;ogbl" 
+target="_top">Imágenes</a>  
+
+https://www.uade.edu.ar/login.html
+
+En resumen, React Router se usa para:
+Rendimiento mejorado: Evita las recargas de página completas.
+Experiencia de usuario fluida: Proporciona transiciones rápidas e instantáneas, simulando la experiencia de una aplicación de escritorio nativa.
+Gestión de estado: Permite mantener el estado de la aplicación (por ejemplo, el carrito de compras) mientras el usuario navega entre diferentes vistas.
+
+
+React Router:
+=============
+Instalar react router: en la raíz del proyecto, donde está package.json
+npm install react-router-dom
+
+Configuración básica de rutas
+BrowserRouter, Routes, Route, Link
+
+Componentes principales 
+  - BrowserRouter Es el contenedor principal que habilita el enrutamiento en la aplicación.
+  - Routes agrupa y define todas las rutas de tu proyecto
+  - Route Define una ruta específica y el componente que se renderiza.
+  - Link hipervinculo a otra página sin recargarla (SPA - Single Page Application). se utiliza en lugar de <a href=""/>
+
+Parámetros de URL (useParams)
+Permite recibir parámetros de la URL (ej: /product/1).
+
+Navegación programática (useNavigate)
+redirigir al usuario después de una acción 
+ej: agregar al carrito ProductDetail.jsx
+
+
+Rutas protegidas 
+Para restringir acceso a ciertas rutas 
+ej: pagar carrito solo si estás logueado Cart.jsx
+
+
+
+Renderizado Condicional:
+=======================
+Permite mostrar componentes o elementos basados en condiciones. Es similar a usar if-else en Java, pero adaptado a JSX.
+
+Operadores lógicos (&&, ||)
+&& mostrar un componente solo si una condición es verdadera.
+true && <h1>hola</h1>
+ej: Cart.jsx
+
+|| se usa para proporcionar un valor alternativo si la condición es falsa (null, undefined, false, 0, "").
+ej: ProductList.jsx
+
+Operador ternario
+Para elegir entre dos componentes/elementos basados en una condición (similar al ? : en Java).
+ej: Cart
+
+Renderizado de listas con .map()
+Permite transformar arrays en elementos JSX (similar a un for en Java, pero declarativo).
+map dice que hacer declarativo "Transforma este array en elementos JSX". No te preocupes por el índice o el bucle interno.
+for dice como hacerlo imperativo "Recorre la lista con un índice". "Usa un bucle para imprimir cada elemento".
+ej: ProductList
+
+
+Manejo de estados de carga y error
+Patrón común para mostrar UI según el estado de una operación asíncrona 
+ej: ProductList
+
+
+
+
+
+
+Conceptos:
+----------
+API (Interfaz de Programación de Aplicaciones): 
+conjunto de reglas que permite que diferentes programas de software se comuniquen entre sí. 
+
+API REST 
+tipo específico de API, comunicación entre sistemas sea más sencilla, escalable y fácil de entender,
+Sin Estado (Stateless): Cada petición del cliente al servidor debe contener toda la información necesaria para entenderla. El servidor no guarda ningún estado de la sesión del cliente entre peticiones. 
+Imagina que cada vez que le pides algo al camarero, tienes que darle toda la información de tu pedido, sin que él recuerde lo que pediste antes. Esto simplifica el diseño del servidor y lo hace más escalable.
+
+Endpoint (Punto de Acceso): 
+Es una URL específica dentro de una API REST que representa un recurso particular o una función específica. 
+Volviendo al ejemplo del restaurante, cada plato en el menú podría tener su propio "punto de acceso" para que lo pidas. Por ejemplo, /usuarios, /productos/123, o /ordenes.
+
+Métodos HTTP: GET (leer), POST (crear), PUT/PATCH (actualizar), DELETE (eliminar).
+
+
+Formularios
+===========
+Componentes controlados
+Validación de datos
+React Hook Form
+Manejo de errores y feedback
+
+npm install react-hook-form
+
+
+
+- El proyecto es un e-commerce con las siguientes pantallas basados en el archivo TPO_AI_1C2025.docx (1).pdf:
+ Productos:
+- Pantalla de Inicio: ver mockup.png
+- Buscar productos por palabras: ver mockup.png
+- Filtrar productos por categoría: ver mockup.png
+- Detalle de producto: ver mockup.png
+ 
+ Usuarios:
+- Login
+- Registro usuario
+ 
+ Carrito: ver mockup.png
+ Gestión de productos:
+     - pantalla para agregar, eliminar y modificar un producto para vender
+
+
+Trabajo laboratorio:
+=================
+Poner las rutas de su aplición e-commerce con react router
