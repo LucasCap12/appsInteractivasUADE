@@ -1,0 +1,418 @@
+{
+  "info": {
+    "_postman_id": "tpo-ecommerce-2025-vm",
+    "name": "TPO E-Commerce - Backend API (VM 192.168.56.2)",
+    "description": "Colección de endpoints para el backend del TPO E-Commerce corriendo dentro de la VM.\n\nTecnologías:\n- Spring Boot 3.x\n- Spring Security + JWT\n- MySQL 8\n- Java 17\n\nCredenciales de Prueba:\n- Admin: admin@market.com / admin123 (ROL: ADMIN)\n- Usuario: juan@market.com / 123456 (ROL: USER)\n\n═══════════════════════════════════════════════════════════════════\n⚙️ CONFIGURACIÓN DEL ENVIRONMENT (IMPORTANTE)\n═══════════════════════════════════════════════════════════════════\n\nSi ya tenés un Environment previo con localhost, ACTUALIZÁ estas variables:\n\n┌─────────────┬────────────────────────────────────────────────────┐\n│ Variable    │ Valor Correcto para VM                             │\n├─────────────┼────────────────────────────────────────────────────┤\n│ baseUrl     │ http://192.168.56.2:8080                           │\n│ adminEmail  │ admin@market.com                                   │\n│ adminPass   │ admin123                                           │\n│ userEmail   │ juan@market.com                                    │\n│ userPass    │ 123456                                             │\n│ authToken   │ (se auto-genera al hacer login, dejalo vacío)      │\n│ token       │ (se auto-genera al hacer login, dejalo vacío)      │\n└─────────────┴────────────────────────────────────────────────────┘\n\n📌 ALTERNATIVA: Si no tenés Environment configurado, esta colección\n   usa variables internas (sección \"variable\" al final del JSON).\n   En ese caso, seleccioná \"No Environment\" en Postman.\n\n═══════════════════════════════════════════════════════════════════\n\nInstrucciones de Uso:\n1) Ejecuta primero 'Login Admin' o 'Login Usuario'\n2) El token JWT se guarda en {{authToken}} automáticamente\n3) Los endpoints protegidos lo usarán en el header Authorization\n\nServidores:\n- VM (Backend directo): http://192.168.56.2:8080\n- VM (Frontend Nginx - SOLO /api): http://192.168.56.2\n\nDocumentación: Ver README.md del proyecto",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "tpo-ecommerce"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "GET Health Status (Actuator)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Application is UP\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql(\"UP\");",
+                  "});",
+                  "",
+                  "pm.test(\"Database is UP\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.components && jsonData.components.db) {",
+                  "        pm.expect(jsonData.components.db.status).to.eql(\"UP\");",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
+            },
+            "description": "Verifica el estado de salud de la aplicación Spring Boot y sus componentes (DB, DiskSpace, etc.)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints de Actuator para monitoreo"
+    },
+    {
+      "name": "Autenticación",
+      "item": [
+        {
+          "name": "POST Registrar Usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 or 201\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  "",
+                  "pm.test(\"Token JWT recibido\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.token) { pm.environment.set(\"authToken\", jsonData.token); }",
+                  "    pm.expect(jsonData.token).to.exist;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Usuario\",\n  \"apellido\": \"Test Postman\",\n  \"email\": \"test.postman{{$timestamp}}@example.com\",\n  \"nombreUsuario\": \"testuser{{$timestamp}}\",\n  \"password\": \"test123\",\n  \"telefono\": \"1134567890\",\n  \"direccion\": \"Calle Falsa 123, Buenos Aires\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "auth", "register" ]
+            },
+            "description": "Registra un nuevo usuario y retorna un JWT"
+          },
+          "response": []
+        },
+        {
+          "name": "POST Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Token JWT recibido\", function () { var j=pm.response.json(); pm.expect(j.token).to.exist; pm.environment.set(\"authToken\", j.token); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@market.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "auth", "login" ]
+            },
+            "description": "Login como ADMIN, guarda token en {{authToken}}"
+          },
+          "response": []
+        },
+        {
+          "name": "POST Login Usuario Regular",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Token JWT recibido\", function () { var j=pm.response.json(); pm.expect(j.token).to.exist; pm.environment.set(\"authToken\", j.token); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"juan@market.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [ "{{baseUrl}}" ],
+              "path": [ "api", "auth", "login" ]
+            },
+            "description": "Login como USER, guarda token en {{authToken}}"
+          },
+          "response": []
+        }
+      ],
+      "description": "Autenticación y registro con JWT"
+    },
+    {
+      "name": "Productos",
+      "item": [
+        {
+          "name": "GET Listar Productos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Response es un array\", function () { var j=pm.response.json(); pm.expect(j).to.be.an('array'); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/productos", "host": ["{{baseUrl}}"], "path": ["api","productos"] } },
+          "response": []
+        },
+        {
+          "name": "GET Producto por ID",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });" ], "type": "text/javascript" } } ],
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/productos/1", "host": ["{{baseUrl}}"], "path": ["api","productos","1"] } },
+          "response": []
+        },
+        {
+          "name": "GET Buscar Productos",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });" ], "type": "text/javascript" } } ],
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/productos/buscar?nombre=Samsung", "host": ["{{baseUrl}}"], "path": ["api","productos","buscar"], "query": [ { "key": "nombre", "value": "Samsung" } ] } },
+          "response": []
+        },
+        {
+          "name": "GET Productos por Categoría",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });" ], "type": "text/javascript" } } ],
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/productos/categoria/1", "host": ["{{baseUrl}}"], "path": ["api","productos","categoria","1"] } },
+          "response": []
+        },
+        {
+          "name": "POST Crear Producto (ADMIN)",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });", "var j=pm.response.json(); pm.environment.set('lastProductId', j.id);" ], "type": "text/javascript" } } ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"iPhone 15 Pro Max\",\n  \"descripcion\": \"Último modelo de Apple con chip A17 Pro\",\n  \"precio\": 1299.99,\n  \"stock\": 50,\n  \"imagenUrl\": \"https://example.com/iphone15promax.jpg\",\n  \"categoria\": { \"id\": 1 }\n}" },
+            "url": { "raw": "{{baseUrl}}/api/productos", "host": ["{{baseUrl}}"], "path": ["api","productos"] },
+            "description": "Requiere rol ADMIN"
+          },
+          "response": []
+        }
+      ],
+      "description": "Catálogo de productos"
+    },
+    {
+      "name": "Categorías",
+      "item": [
+        {
+          "name": "GET Listar Categorías",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });" ], "type": "text/javascript" } } ],
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/categorias", "host": ["{{baseUrl}}"], "path": ["api","categorias"] } },
+          "response": []
+        },
+        {
+          "name": "GET Categoría por ID",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });" ], "type": "text/javascript" } } ],
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/categorias/1", "host": ["{{baseUrl}}"], "path": ["api","categorias","1"] } },
+          "response": []
+        },
+        {
+          "name": "POST Crear Categoría (ADMIN)",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });", "var j=pm.response.json(); pm.environment.set('lastCategoryId', j.id);" ], "type": "text/javascript" } } ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Accesorios Gaming\",\n  \"descripcion\": \"Teclados, mouse, auriculares y más\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/categorias", "host": ["{{baseUrl}}"], "path": ["api","categorias"] }
+          },
+          "response": []
+        }
+      ],
+      "description": "Gestión de categorías"
+    },
+    {
+      "name": "Órdenes",
+      "item": [
+        {
+          "name": "GET Listar Mis Órdenes",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });" ], "type": "text/javascript" } } ],
+          "request": { "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] }, "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/ordenes", "host": ["{{baseUrl}}"], "path": ["api","ordenes"] } },
+          "response": []
+        },
+        {
+          "name": "POST Crear Orden (Simple)",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });", "var j=pm.response.json(); pm.environment.set('lastOrderId', j.id);" ], "type": "text/javascript" } } ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"items\": [ { \"productoId\": 1, \"cantidad\": 2 } ],\n  \"direccionEnvio\": \"Av. Corrientes 1234, Buenos Aires\",\n  \"metodoPago\": \"Tarjeta de Credito\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/ordenes", "host": ["{{baseUrl}}"], "path": ["api","ordenes"] }
+          },
+          "response": []
+        }
+      ],
+      "description": "Gestión de órdenes (JWT requerido)"
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "GET Mi Perfil",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });" ], "type": "text/javascript" } } ],
+          "request": { "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] }, "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/usuarios/perfil", "host": ["{{baseUrl}}"], "path": ["api","usuarios","perfil"] } },
+          "response": []
+        },
+        {
+          "name": "PUT Actualizar Mi Perfil",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });" ], "type": "text/javascript" } } ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] },
+            "method": "PUT",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Juan Actualizado\",\n  \"apellido\": \"Pérez González\",\n  \"telefono\": \"1165432198\",\n  \"direccion\": \"Nueva Dirección 789, CABA\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/usuarios/perfil", "host": ["{{baseUrl}}"], "path": ["api","usuarios","perfil"] }
+          },
+          "response": []
+        }
+      ],
+      "description": "Usuarios y perfil"
+    },
+    {
+      "name": "Favoritos",
+      "item": [
+        {
+          "name": "GET Mis Favoritos",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });", "pm.test(\"Response es un array\", function () { var j=pm.response.json(); pm.expect(j).to.be.an('array'); });" ], "type": "text/javascript" } } ],
+          "request": { "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] }, "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/favoritos", "host": ["{{baseUrl}}"], "path": ["api","favoritos"] } },
+          "response": []
+        },
+        {
+          "name": "POST Agregar Favorito",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });", "pm.test(\"Favorito agregado correctamente\", function () { var j=pm.response.json(); pm.expect(j.success).to.eql(true); pm.expect(j.message).to.exist; });" ], "type": "text/javascript" } } ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] },
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/favoritos/1", "host": ["{{baseUrl}}"], "path": ["api","favoritos","1"] },
+            "description": "Agrega el producto con ID 1 a favoritos. Cambiar el ID según necesidad."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Verificar Favorito",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });", "pm.test(\"Respuesta contiene esFavorito\", function () { var j=pm.response.json(); pm.expect(j).to.have.property('esFavorito'); });" ], "type": "text/javascript" } } ],
+          "request": { "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] }, "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/favoritos/check/1", "host": ["{{baseUrl}}"], "path": ["api","favoritos","check","1"] } },
+          "response": []
+        },
+        {
+          "name": "DELETE Eliminar Favorito",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });", "pm.test(\"Favorito eliminado correctamente\", function () { var j=pm.response.json(); pm.expect(j.success).to.eql(true); });" ], "type": "text/javascript" } } ],
+          "request": { "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] }, "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/favoritos/1", "host": ["{{baseUrl}}"], "path": ["api","favoritos","1"] } },
+          "response": []
+        }
+      ],
+      "description": "Gestión de productos favoritos (requiere autenticación)"
+    },
+    {
+      "name": "Carrito",
+      "item": [
+        {
+          "name": "GET Mi Carrito",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });", "pm.test(\"Carrito contiene items y total\", function () { var j=pm.response.json(); pm.expect(j).to.have.property('items'); pm.expect(j).to.have.property('total'); });" ], "type": "text/javascript" } } ],
+          "request": { "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] }, "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/carrito", "host": ["{{baseUrl}}"], "path": ["api","carrito"] } },
+          "response": []
+        },
+        {
+          "name": "POST Agregar Item al Carrito",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });", "pm.test(\"Item agregado al carrito\", function () { var j=pm.response.json(); pm.expect(j.items).to.be.an('array'); });" ], "type": "text/javascript" } } ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] },
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"productoId\": 1,\n  \"cantidad\": 2\n}" },
+            "url": { "raw": "{{baseUrl}}/api/carrito/items", "host": ["{{baseUrl}}"], "path": ["api","carrito","items"] },
+            "description": "Agrega un producto al carrito o actualiza la cantidad si ya existe"
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Actualizar Cantidad Item",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });" ], "type": "text/javascript" } } ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] },
+            "method": "PUT",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/carrito/items/1?cantidad=5", "host": ["{{baseUrl}}"], "path": ["api","carrito","items","1"], "query": [ { "key": "cantidad", "value": "5" } ] },
+            "description": "Actualiza la cantidad de un item existente en el carrito. Cambiar itemId y cantidad según necesidad."
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Eliminar Item del Carrito",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });" ], "type": "text/javascript" } } ],
+          "request": { "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] }, "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/carrito/items/1", "host": ["{{baseUrl}}"], "path": ["api","carrito","items","1"] } },
+          "response": []
+        },
+        {
+          "name": "DELETE Vaciar Carrito",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 204\", function () { pm.response.to.have.status(204); });" ], "type": "text/javascript" } } ],
+          "request": { "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] }, "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/carrito", "host": ["{{baseUrl}}"], "path": ["api","carrito"] } },
+          "response": []
+        }
+      ],
+      "description": "Gestión del carrito de compras persistente (requiere autenticación)"
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "GET Todos los Productos (Admin)",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });", "pm.test(\"Response es un array\", function () { var j=pm.response.json(); pm.expect(j).to.be.an('array'); });" ], "type": "text/javascript" } } ],
+          "request": { "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] }, "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/admin/productos", "host": ["{{baseUrl}}"], "path": ["api","admin","productos"] }, "description": "Obtiene TODOS los productos incluyendo inactivos. Solo accesible con rol ADMIN." },
+          "response": []
+        },
+        {
+          "name": "PATCH Toggle Activo Producto (Admin)",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });", "pm.test(\"Estado actualizado\", function () { var j=pm.response.json(); pm.expect(j.message).to.exist; pm.expect(j.producto).to.exist; });" ], "type": "text/javascript" } } ],
+          "request": { "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] }, "method": "PATCH", "header": [], "url": { "raw": "{{baseUrl}}/api/admin/productos/1/toggle-activo", "host": ["{{baseUrl}}"], "path": ["api","admin","productos","1","toggle-activo"] }, "description": "Alterna el estado activo/inactivo de un producto. Solo ADMIN." },
+          "response": []
+        },
+        {
+          "name": "DELETE Eliminar Producto Permanentemente (Admin)",
+          "event": [ { "listen": "test", "script": { "exec": [ "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });", "pm.test(\"Producto eliminado\", function () { var j=pm.response.json(); pm.expect(j.message).to.include('eliminado'); });" ], "type": "text/javascript" } } ],
+          "request": { "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] }, "method": "DELETE", "header": [], "url": { "raw": "{{baseUrl}}/api/admin/productos/1", "host": ["{{baseUrl}}"], "path": ["api","admin","productos","1"] }, "description": "Elimina un producto permanentemente de la base de datos. Solo ADMIN." },
+          "response": []
+        }
+      ],
+      "description": "Endpoints administrativos (solo accesibles con rol ADMIN)"
+    }
+  ],
+  "event": [
+    { "listen": "prerequest", "script": { "type": "text/javascript", "exec": ["\n// Limpieza opcional de headers duplicados\n"] } },
+    { "listen": "test", "script": { "type": "text/javascript", "exec": [""] } }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://192.168.56.2:8080", "type": "string" },
+    { "key": "authToken", "value": "", "type": "string" },
+    { "key": "lastProductId", "value": "", "type": "string" },
+    { "key": "lastCategoryId", "value": "", "type": "string" },
+    { "key": "lastOrderId", "value": "", "type": "string" }
+  ]
+}
