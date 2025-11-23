@@ -10,7 +10,7 @@
 > **Plataforma de comercio electrónico moderna y escalable.**
 > Este proyecto es una solución Full Stack completa que incluye gestión de inventario, carrito de compras persistente, checkout seguro y un panel de administración robusto. Diseñado con un enfoque en la experiencia de usuario (UX), accesibilidad y arquitectura limpia.
 
-![Home Page](./screenshots/home.png)
+![Home Page](./screenshots/home.png?raw=true)
 ---
 
 ##  Arquitectura del Proyecto
