@@ -1,0 +1,142 @@
+# =============================================================================
+# DOCKER COMPOSE - E-COMMERCE FULL STACK
+# =============================================================================
+# Despliegue completo de 3 capas:
+# - Frontend (React + Nginx)
+# - Backend (Spring Boot)
+# - Base de Datos (MySQL)
+#
+# Para Vagrant + Docker - TP Aplicaciones Interactivas
+# =============================================================================
+
+version: '3.8'
+
+services:
+  # ===========================================================================
+  # MYSQL - Base de Datos
+  # ===========================================================================
+  mysql:
+    image: mysql:8.0
+    container_name: ecommerce-mysql
+    restart: unless-stopped
+    
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${DB_NAME:-ecommerce_tpo}
+      MYSQL_USER: ${DB_USER:-ecommerce_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-ecommerce_pass}
+      TZ: America/Argentina/Buenos_Aires
+    
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # Spring Boot JPA crea las tablas automáticamente con ddl-auto=update
+    
+    ports:
+      - "3306:3306"
+    
+    networks:
+      - ecommerce-network
+    
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-root}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ===========================================================================
+  # BACKEND - Spring Boot API
+  # ===========================================================================
+  backend:
+    build:
+      context: ./e_commerce
+      dockerfile: Dockerfile
+    container_name: ecommerce-backend
+    restart: unless-stopped
+    
+    # Cargar variables de entorno desde .env (12-Factor App)
+    env_file:
+      - .env
+    
+    environment:
+      # Database connection
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${DB_NAME:-ecommerce_tpo}?useSSL=false&serverTimezone=America/Argentina/Buenos_Aires&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-ecommerce_user}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-ecommerce_pass}
+      
+      # JPA/Hibernate
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: ${SHOW_SQL:-false}
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      
+      # JWT Security
+      JWT_SECRET: ${JWT_SECRET:-404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+      
+      # Server
+      SERVER_PORT: 8080
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILE:-prod}
+      
+      # Logging
+      LOGGING_LEVEL_ROOT: INFO
+      LOGGING_LEVEL_COM_API_ECOMMERCE: DEBUG
+    
+    ports:
+      - "8080:8080"
+    
+    depends_on:
+      mysql:
+        condition: service_healthy
+    
+    networks:
+      - ecommerce-network
+    
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ===========================================================================
+  # FRONTEND - React + Nginx
+  # ===========================================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ecommerce-frontend
+    restart: unless-stopped
+    
+    ports:
+      - "80:80"
+    
+    depends_on:
+      - backend
+    
+    networks:
+      - ecommerce-network
+    
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+# =============================================================================
+# VOLUMES - Persistencia de Datos
+# =============================================================================
+volumes:
+  mysql_data:
+    name: ecommerce_mysql_data
+    driver: local
+
+# =============================================================================
+# NETWORKS - Red Privada
+# =============================================================================
+networks:
+  ecommerce-network:
+    name: ecommerce_network
+    driver: bridge
