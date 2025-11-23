@@ -1,0 +1,181 @@
+# =============================================================================# ==============================================================================
+
+# .dockerignore - Archivos excluidos del contexto de build de Docker# .dockerignore - Archivos/carpetas a EXCLUIR del contexto de build de Docker
+
+# =============================================================================# ==============================================================================
+
+# Reduce el tamaño del contexto de build y acelera el proceso# Reduce tamaño del contexto → build más rápido
+
+# Similar a .gitignore pero para Docker# Evita copiar archivos innecesarios al contenedor
+
+# =============================================================================# ==============================================================================
+
+
+
+# Build artifacts# ============================================================================
+
+target/# DIRECTORIO TARGET (ya generado en el build)
+
+!.mvn/wrapper/maven-wrapper.jar# ============================================================================
+
+*.jartarget/
+
+*.war!target/*.jar
+
+*.ear
+
+*.class# ============================================================================
+
+# CONFIGURACIÓN DE MAVEN
+
+# IDE# ============================================================================
+
+.idea/.mvn/wrapper/maven-wrapper.jar
+
+.vscode/
+
+*.iml# ============================================================================
+
+*.iws# CONFIGURACIÓN DE IDE
+
+*.ipr# ============================================================================
+
+.settings/# IntelliJ IDEA
+
+.project.idea/
+
+.classpath*.iml
+
+*.iws
+
+# Logs*.ipr
+
+*.logout/
+
+logs/
+
+# Eclipse
+
+# OS.classpath
+
+.DS_Store.project
+
+Thumbs.db.settings/
+
+bin/
+
+# Git
+
+.git/# NetBeans
+
+.gitignorenbproject/
+
+.gitattributesnbbuild/
+
+dist/
+
+# Dockernbdist/
+
+Dockerfile*.nb-gradle/
+
+docker-compose*
+
+.dockerignore# VS Code
+
+.vscode/
+
+# Documentation*.code-workspace
+
+README.md
+
+*.md# ============================================================================
+
+docs/# ARCHIVOS DE SISTEMA
+
+# ============================================================================
+
+# Tests.DS_Store
+
+src/test/.DS_Store?
+
+._*
+
+# Maven wrapper (se copia explícitamente en Dockerfile).Spotlight-V100
+
+# .mvn/.Trashes
+
+ehthumbs.db
+
+# EnvironmentThumbs.db
+
+.envDesktop.ini
+
+.env.local
+
+.env.*.local# ============================================================================
+
+# GIT
+
+# Temporary# ============================================================================
+
+tmp/.git/
+
+temp/.gitignore
+
+*.tmp.gitattributes
+
+*.bak
+
+*.swp# ============================================================================
+
+*~# DOCKER
+
+# ============================================================================
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# ============================================================================
+# LOGS
+# ============================================================================
+*.log
+logs/
+
+# ============================================================================
+# DOCUMENTACIÓN
+# ============================================================================
+README.md
+SETUP_AUTOMATICO.md
+PLAN_IMPLEMENTACION_DOCKER.md
+*.txt
+*.pdf
+
+# ============================================================================
+# ARCHIVOS TEMPORALES
+# ============================================================================
+*.tmp
+*.bak
+*.swp
+*~.nib
+*.class
+
+# ============================================================================
+# VARIABLES DE ENTORNO (IMPORTANTE: no exponer secretos)
+# ============================================================================
+.env
+.env.local
+.env.development
+.env.production
+
+# ============================================================================
+# NODE (si tienes frontend en el mismo repo)
+# ============================================================================
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# ============================================================================
+# PRUEBAS
+# ============================================================================
+test-results/
+coverage/
