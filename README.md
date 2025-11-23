@@ -1,4 +1,4 @@
-#  E-Commerce Full Stack | Spring Boot & React
+Ôªø#  E-Commerce Full Stack | Spring Boot & React
 
 ![Java](https://img.shields.io/badge/Java-17-orange?style=flat-square&logo=java)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-green?style=flat-square&logo=springboot)
@@ -7,8 +7,8 @@
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-00758F?style=flat-square&logo=mysql)
 ![WCAG](https://img.shields.io/badge/WCAG-2.1%20AA-success?style=flat-square&logo=w3c)
 
-> **Plataforma de comercio electrÛnico moderna y escalable.**  
-> Este proyecto es una soluciÛn Full Stack completa que incluye gestiÛn de inventario, carrito de compras persistente, checkout seguro y un panel de administraciÛn robusto. DiseÒado con un enfoque en la experiencia de usuario (UX), accesibilidad y arquitectura limpia.
+> **Plataforma de comercio electr√≥nico moderna y escalable.**  
+> Este proyecto es una soluci√≥n Full Stack completa que incluye gesti√≥n de inventario, carrito de compras persistente, checkout seguro y un panel de administraci√≥n robusto. Dise√±ado con un enfoque en la experiencia de usuario (UX), accesibilidad y arquitectura limpia.
 
 ![Home Page](./screenshots/home.png)
 
@@ -18,11 +18,12 @@
 
 El proyecto sigue una arquitectura de microservicios simplificada (monolito modular) contenerizada con Docker.
 
-``n root
+`
+ root
   aplicacion
      backend        # API RESTful (Spring Boot 3)
        Security      # JWT Stateless Authentication
-       Services      # LÛgica de Negocio
+       Services      # L√≥gica de Negocio
        Repository    # Capa de Persistencia (JPA/Hibernate)
    
      frontend       # SPA (React 19 + Vite)
@@ -30,33 +31,34 @@ El proyecto sigue una arquitectura de microservicios simplificada (monolito modu
         Components    # UI Reutilizable (Tailwind CSS)
         Services      # Axios Interceptors & API Calls
 
-  infra              # Infraestructura como CÛdigo
+  infra              # Infraestructura como C√≥digo
      docker-compose.yml
      Vagrantfile
-``n
+`
+
 ---
 
 ##  Key Features
 
-###  UX/UI & DiseÒo
-*   **Modern Design System:** Paleta de colores sem·ntica (Violeta/Turquesa) con soporte nativo para **Dark Mode**.
-*   **Hero Carousel Din·mico:** Slider interactivo con transiciones suaves y llamadas a la acciÛn (CTA) condicionales seg˙n el estado del usuario.
-*   **Responsive First:** DiseÒo fluido que se adapta perfectamente a mÛviles, tablets y escritorio.
+###  UX/UI & Dise√±o
+*   **Modern Design System:** Paleta de colores sem√°ntica (Violeta/Turquesa) con soporte nativo para **Dark Mode**.
+*   **Hero Carousel Din√°mico:** Slider interactivo con transiciones suaves y llamadas a la acci√≥n (CTA) condicionales seg√∫n el estado del usuario.
+*   **Responsive First:** Dise√±o fluido que se adapta perfectamente a m√≥viles, tablets y escritorio.
 
-###  Seguridad & AutenticaciÛn
-*   **JWT Stateless:** AutenticaciÛn segura mediante JSON Web Tokens.
-*   **Password Hashing:** EncriptaciÛn BCrypt para contraseÒas de usuarios.
+###  Seguridad & Autenticaci√≥n
+*   **JWT Stateless:** Autenticaci√≥n segura mediante JSON Web Tokens.
+*   **Password Hashing:** Encriptaci√≥n BCrypt para contrase√±as de usuarios.
 *   **Role-Based Access Control (RBAC):** Rutas protegidas para Administradores y Usuarios.
 
 ###  Funcionalidad Core
-*   **Carrito Persistente:** El estado del carrito se mantiene incluso si recargas la p·gina.
-*   **Checkout Multi-paso:** Proceso de compra guiado (RevisiÛn -> EnvÌo -> Pago -> ConfirmaciÛn).
+*   **Carrito Persistente:** El estado del carrito se mantiene incluso si recargas la p√°gina.
+*   **Checkout Multi-paso:** Proceso de compra guiado (Revisi√≥n -> Env√≠o -> Pago -> Confirmaci√≥n).
 *   **Historial de Pedidos:** Los usuarios pueden ver el estado y detalle de sus compras anteriores.
-*   **GestiÛn de Productos:** Panel administrativo para crear, editar y eliminar productos con soporte para im·genes en Base64.
+*   **Gesti√≥n de Productos:** Panel administrativo para crear, editar y eliminar productos con soporte para im√°genes en Base64.
 
 ###  Accesibilidad
 *   Cumplimiento de **WCAG 2.1 AA**.
-*   NavegaciÛn por teclado completa.
+*   Navegaci√≥n por teclado completa.
 *   Etiquetas ARIA y contrastes de color validados.
 
 ---
@@ -69,20 +71,22 @@ Sigue estos pasos para levantar el proyecto en tu entorno local.
 *   Docker & Docker Compose
 *   (Opcional) Java 17 & Node.js 20 si quieres correrlo sin Docker.
 
-### InstalaciÛn
+### Instalaci√≥n
 
 1.  **Clonar el repositorio**
     `ash
-    git clone https://github.com/tu-usuario/tpo-ecommerce.git
-    cd tpo-ecommerce
-    ``n
+    git clone https://github.com/LucasCap12/appsInteractivasUADE.git
+    cd appsInteractivasUADE
+    `
+
 2.  **Iniciar con Docker Compose**
     `ash
     cd aplicacion
     docker compose up -d --build
-    ``n    *Esto levantar· la base de datos MySQL, el Backend (Spring Boot) y el Frontend (React).*
+    `
+    *Esto levantar√° la base de datos MySQL, el Backend (Spring Boot) y el Frontend (React).*
 
-3.  **Acceder a la aplicaciÛn**
+3.  **Acceder a la aplicaci√≥n**
     *   **Frontend:** [http://localhost:5173](http://localhost:5173) (o el puerto configurado en vite)
     *   **Backend API:** [http://localhost:8080](http://localhost:8080)
 
@@ -90,12 +94,12 @@ Sigue estos pasos para levantar el proyecto en tu entorno local.
 
 | Rol | Email | Password |
 | :--- | :--- | :--- |
-| **Admin** | dmin@ecommerce.com | dmin123 |
-| **User** | user@ecommerce.com | user123 |
+| **Admin** | dmin@market.com | dmin123 |
+| **User** | juan@market.com | 123456 |
 
 ---
 
-##  TecnologÌas
+##  Tecnolog√≠as
 
 *   **Backend:** Java 17, Spring Boot 3.2, Spring Security, Spring Data JPA, MySQL.
 *   **Frontend:** React 19, Vite, Tailwind CSS, Axios, React Router v6, Lucide React.
